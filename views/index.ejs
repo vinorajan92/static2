@@ -1,0 +1,116 @@
+<aside id="fh5co-hero" class="js-fullheight">
+	<div class="flexslider js-fullheight">
+		<ul class="slides">
+			<% for(var i=0; i<products.length; i++) {%>
+                <%- include('partials/banner', {product:products[i]}) %>
+            <% } %>
+		</ul>
+	</div>
+</aside>
+
+<div id="fh5co-services" class="fh5co-bg-section">
+	<div class="container">
+		<div class="row">
+			<% for(var i=0; i<services.length; i++) {%>
+                <%- include('partials/service', {service:services[i]}) %>
+            <% } %>
+		</div>
+	</div>
+</div>
+<div id="fh5co-product">
+	<div class="container">
+		<div class="row animate-box">
+			<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+				<span>Cool Stuff</span>
+				<h2>Products.</h2>
+				<p>Dignissimos asperiores vitae velit veniam totam fuga molestias accusamus alias autem provident. Odit
+					ab aliquam dolor eius.</p>
+			</div>
+		</div>
+		<div class="row">
+			<% for(var i=0; i<products.length; i++) {%>
+                <%- include('partials/product', {product:products[i]}) %>
+             <% } %>
+		</div>
+	</div>
+</div>
+
+<div id="fh5co-testimonial" class="fh5co-bg-section">
+	<div class="container">
+		<div class="row animate-box">
+			<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+				<span>Testimony</span>
+				<h2>Happy Clients</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row animate-box">
+					<div class="owl-carousel owl-carousel-fullwidth">
+						<% for(var i=0; i<clients.length; i++) {%>
+							<%- include('partials/happy_client', {client:clients[i]}) %>
+						<% } %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="fh5co-counter" class="fh5co-bg fh5co-counter" style="background-image:url(images/img_bg_5.jpg);">
+	<div class="container">
+		<div class="row">
+			<div class="display-t">
+				<div class="display-tc">
+					<div class="col-md-3 col-sm-6 animate-box">
+						<div class="feature-center">
+							<span class="icon">
+								<i class="icon-eye"></i>
+							</span>
+
+							<span class="counter js-counter" data-from="0" data-to="22070" data-speed="5000"
+								data-refresh-interval="50">1</span>
+							<span class="counter-label">Creativity Fuel</span>
+
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-6 animate-box">
+						<div class="feature-center">
+							<span class="icon">
+								<i class="icon-shopping-cart"></i>
+							</span>
+
+							<span class="counter js-counter" data-from="0" data-to="450" data-speed="5000"
+								data-refresh-interval="50">1</span>
+							<span class="counter-label">Happy Clients</span>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-6 animate-box">
+						<div class="feature-center">
+							<span class="icon">
+								<i class="icon-shop"></i>
+							</span>
+							<span class="counter js-counter" data-from="0" data-to="700" data-speed="5000"
+								data-refresh-interval="50">1</span>
+							<span class="counter-label">All Products</span>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-6 animate-box">
+						<div class="feature-center">
+							<span class="icon">
+								<i class="icon-clock"></i>
+							</span>
+
+							<span class="counter js-counter" data-from="0" data-to="5605" data-speed="5000"
+								data-refresh-interval="50">1</span>
+							<span class="counter-label">Hours Spent</span>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%- include('partials/newsletter') %>
