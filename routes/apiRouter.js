@@ -9,7 +9,7 @@ const { check, validationResult, matchedData } = require('express-validator');
 
 var mailer = require('../mailer');
 
-const mailData = {
+var mailData = {
     from: process.env.EMAIL_USER,
     to: process.env.TO_EMAIL,
     html: ''
