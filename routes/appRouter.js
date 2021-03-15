@@ -1,12 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var transporter = require('../mailer');
-const { check, validationResult, matchedData } = require('express-validator');
-
-const mailData = {
-  from: 'support@shanmugaagency.com',
-  html: ''
-};
+require('dotenv').config()
 
 const APP_NAME = 'Shanmuga Agency'
 
@@ -44,12 +38,8 @@ const APP_SERVICES = [
   {type:'Service 6', message:'We deliver etc etc'}
 ]
 
-function renderIndex(res){
-  res.render('index', {title: APP_NAME, appName:APP_NAME, products: APP_PRODUCTS, clients:CLIENTS, services: APP_SERVICES});
-}
-
 router.get('/', function(req, res, next) {
-  renderIndex(res);
+  res.render('index', {title: APP_NAME, appName:APP_NAME, products: APP_PRODUCTS, clients:CLIENTS, services: APP_SERVICES});
 });
 
 router.get('/products', function(req, res, next) {
@@ -67,93 +57,6 @@ router.get('/services', function(req, res, next) {
 router.get('/contact', function(req, res, next) {
   res.render('contact', {title:`${APP_NAME} - Contact us`, appName: APP_NAME});
 });
-
-router.post('/contact', [
-  check('message')
-    .isLength({ min: 1 })
-    .withMessage('Message is required'),
-  check('firstname')
-    .isLength({ min: 1 })
-    .withMessage('First Name is required'),
-  check('phone')
-    .isLength({ min: 1 })
-    .withMessage('Mobile Number is required'),
-  check('email')
-    .isEmail()
-    .withMessage('That email doesn‘t look right')
-], (req, res) => {
-  const validator = validationResult(req);
-  if(validator.errors.length){
-    res.render('contact', {title:`${APP_NAME} - Contact us`, appName: APP_NAME, formData:req.body, error:validator.erros});
-  }else{
-    let {email, message, firstname, lastname, subject, phone} = req.body;
-    mailData.to = email;
-    mailData.html = message;
-    mailData.subject = `${firstname} ${lastname} - ${phone}: ` + (subject || "Customer Requested for Get in Touch");
-
-    transporter.sendMail(mailData, function (err, info) {
-      if(err){
-        res.status(500).send("Failed to send Email. Please try again later", err);
-      }
-      else{
-        res.redirect('/contact');
-      }
-    });
-  }
-});
-
-router.post('/subscribe', [
-  check('email')
-    .isEmail()
-    .withMessage('That email doesn‘t look right')
-], (req, res) => {
-  const validator = validationResult(req);
-  if(validator.errors.length){
-    res.status(204).send();
-  }else{
-    let {email} = req.body;
-    mailData.to = email;
-    mailData.subject = `${email} has subscribed for latest product updates`;
-
-    transporter.sendMail(mailData, function (err, info) {
-      if(err)
-        res.status(500).send("Failed to send Email. Please try again later", err);
-      else
-        res.redirect('/');
-    });
-  }
-})
-
-router.post('products/:product-name/get-quote', [
-  check('message')
-    .isLength({ min: 1 })
-    .withMessage('Message is required'),
-  check('firstname')
-    .isLength({ min: 1 })
-    .withMessage('First Name is required'),
-  check('phone')
-    .isLength({ min: 1 })
-    .withMessage('Mobile Number is required'),
-  check('email')
-    .isEmail()
-    .withMessage('That email doesn‘t look right')
-], (req, res) => {
-  const validator = validationResult(req);
-  if(validator.errors.length){
-    res.render('');
-  }else{
-    let {email} = req.body;
-    mailData.to = email;
-    mailData.subject = `${email} has subscribed for latest product updates`;
-
-    transporter.sendMail(mailData, function (err, info) {
-      if(err)
-        res.status(500).send("Failed to send Email. Please try again later", err);
-      else
-        res.redirect('/');
-    });
-  }
-})
 
 router.get('/about', function(req, res, next) {
   res.render('about', {title:`${APP_NAME} - About us`, appName: APP_NAME, members:TEAM_MEMBER});

@@ -3,10 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var sassMiddleware = require('node-sass-middleware');
 var expressLayouts = require('express-ejs-layouts');
+const { connectDb } = require('./connection');
 
 var appRouter = require('./routes/appRouter');
+var apiRouter = require('./routes/apiRouter');
 var app = express();
 
 app.use(expressLayouts);
@@ -20,15 +21,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(sassMiddleware({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  indentedSyntax: true, // true = .sass and false = .scss
-}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', appRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -45,5 +42,11 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+connectDb().then(()=> {
+  console.log("DB Connected");
+},(err)=>{
+    console.log("Failed to connect DB:", err);
+})
 
 module.exports = app;
