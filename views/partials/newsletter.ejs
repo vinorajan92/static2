@@ -54,7 +54,7 @@
 				}
 			}
 		};
-		sendMessageButton.setAttribute('disabled', true);
+		newsletterbutton.setAttribute('disabled', true);
 		xhttp.open("POST", "/api/subscribe", true);
 		xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 		xhttp.send(JSON.stringify(data));
