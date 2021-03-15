@@ -16,8 +16,7 @@ const Schema = new mongoose.Schema({
     required: true
  },
  subject: {
-     type: String,
-     required: true
+     type: String
  },
  message: {
      type: String,
