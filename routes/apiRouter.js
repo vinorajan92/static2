@@ -98,7 +98,6 @@ router.post('/subscribe', [
       let {email, message, firstname, lastname, subject, phone} = req.body;
       var contact = new Contact({email,firstname,lastname,subject,message,phone});
       contact.save().then(()=>{
-        mailData.to = email;
         mailData.html = message;
         mailData.subject = `${firstname} ${lastname} - ${phone}: ` + (subject || "Customer Requested for Get in Touch");
         mailer.sendMail(mailData,res);
