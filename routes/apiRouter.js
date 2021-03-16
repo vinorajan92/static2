@@ -6,10 +6,14 @@ const Subscribe = require('../models/Subscribe');
 const bcrypt = require('bcryptjs');
 const {authenticateToken, generateAccessToken} = require('../auth');
 const { check, validationResult, matchedData } = require('express-validator');
+var TeamMember = require('../models/TeamMember');
+var Product = require('../models/Product');
+var Service = require('../models/Service');
+var Client = require('../models/Client');
 
 var mailer = require('../mailer');
 
-var mailData = {
+const mailData = {
     from: process.env.EMAIL_USER,
     to: process.env.TO_EMAIL,
     html: ''
@@ -43,14 +47,55 @@ router.get('/users', authenticateToken, async (req,res)=>{
     res.status(200).json(users);
 });
 
-router.get('/quotes', authenticateToken, async (req,res)=>{
-    const users = await User.find();
-    res.status(200).json(users);
+router.post('/team-member', authenticateToken, async (req,res)=>{
+  let teamMember = new TeamMember({...req.body});
+  await teamMember.save().then((response)=>{
+    res.status(200).json(response);
+  },(err)=>{
+    res.status(500).json(err);
+  });
+});
+
+router.post('/product', authenticateToken, async (req,res)=>{
+  let product = new Product({...req.body});
+  await product.save().then((response)=>{
+    res.status(200).json(response);
+  },(err)=>{
+    res.status(500).json(err);
+  });
+});
+
+router.post('/service', authenticateToken, async (req,res)=>{
+  let service = new Service({...req.body});
+  await service.save().then((response)=>{
+    res.status(200).json(response);
+  },(err)=>{
+    res.status(500).json(err);
+  });
+});
+
+router.post('/client', authenticateToken, async (req,res)=>{
+  let client = new Client({...req.body});
+  await client.save().then((response)=>{
+    res.status(200).json(response);
+  },(err)=>{
+    res.status(500).json(err);
+  });
+});
+
+router.get('/get-in-touch', authenticateToken, async (req,res)=>{
+  let email = req.query.email;
+  let findObject = {}
+  if(email){
+    findObject.email = email;
+  }
+  const getInTouch = await Contact.find(findObject);
+  res.status(200).json(getInTouch);
 });
 
 router.get('/subscribe', authenticateToken, async (req,res)=>{
-    const users = await User.find();
-    res.status(200).json(users);
+    const subscribedUsers = await Subscribe.find();
+    res.status(200).json(subscribedUsers);
 });
 
 router.post('/subscribe', [
@@ -65,7 +110,7 @@ router.post('/subscribe', [
       let newsletterSubscribe = new Subscribe({email});
       await newsletterSubscribe.save().then(()=> {
         mailData.subject = `${email} has subscribed for latest product updates`;
-        mailer.sendMail(mailData,res);
+        mailer.sendMail(mailData);
         res.status(200).send({message:"You've have successfully subscribed to out products update"});
       },(err)=>{
         if(err.name === 'MongoError' && err.code === 11000){
@@ -98,9 +143,10 @@ router.post('/subscribe', [
       let {email, message, firstname, lastname, subject, phone} = req.body;
       var contact = new Contact({email,firstname,lastname,subject,message,phone});
       contact.save().then(()=>{
+        mailData.to = email;
         mailData.html = message;
         mailData.subject = `${firstname} ${lastname} - ${phone}: ` + (subject || "Customer Requested for Get in Touch");
-        mailer.sendMail(mailData,res);
+        mailer.sendMail(mailData);
         res.status(200).send({message:"We will get in touch with you shortly"});
       },()=>{
         res.status(500).json({message:"Failed to place contact request. Please try again sometime"});

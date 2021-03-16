@@ -177,30 +177,25 @@
 
 		// Click tab menu
 		$('.fh5co-tab-nav a').on('click', function(event){
-			
 			var $this = $(this),
 				tab = $this.data('tab');
 
-			$('.tab-content')
-				.addClass('animated-fast fadeOutDown');
-
 			$('.fh5co-tab-nav li').removeClass('active');
-			
+			$('.fh5co-tab-content').removeClass('active');
 			$this
 				.closest('li')
 					.addClass('active')
-
 			$this
 				.closest('.fh5co-tabs')
 					.find('.tab-content[data-tab-content="'+tab+'"]')
-					.removeClass('animated-fast fadeOutDown')
+					.removeClass('fadeOutDown')
 					.addClass('animated-fast active fadeIn');
 
 
 			autoHeight();
 			event.preventDefault();
 
-		}); 
+		});
 	};
 
 	var goToTop = function() {
