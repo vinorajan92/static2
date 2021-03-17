@@ -279,16 +279,16 @@
 	};
 
 	var testimonialCarousel = function(){
-		
 		var owl = $('.owl-carousel-fullwidth');
 		owl.owlCarousel({
 			items: 1,
-			loop: true,
-			margin: 0,
+			margin:0,
+			autoplay:true,
+			autoplayTimeout:10000,
+			autoplayHoverPause:true,
 			nav: false,
 			dots: true,
-			smartSpeed: 800,
-			autoHeight: true
+			smartSpeed: 800
 		});
 
 	};

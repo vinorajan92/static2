@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
-const Contact =require('../models/Contact');
-const Subscribe = require('../models/Subscribe');
 const bcrypt = require('bcryptjs');
 const {authenticateToken, generateAccessToken} = require('../auth');
-const { check, validationResult, matchedData } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 var TeamMember = require('../models/TeamMember');
 var Product = require('../models/Product');
 var Service = require('../models/Service');
 var Client = require('../models/Client');
+const User = require('../models/User');
+const Contact =require('../models/Contact');
+const Subscribe = require('../models/Subscribe');
 
 var mailer = require('../mailer');
 
@@ -47,41 +47,155 @@ router.get('/users', authenticateToken, async (req,res)=>{
     res.status(200).json(users);
 });
 
+
+/** TEAM MEMBER */
+router.get('/team-member', authenticateToken, async (req,res)=>{
+  const teamMembers = await TeamMember.find();
+  res.status(200).json(teamMembers);
+});
+
 router.post('/team-member', authenticateToken, async (req,res)=>{
   let teamMember = new TeamMember({...req.body});
-  await teamMember.save().then((response)=>{
+  teamMember.save().then((response)=>{
     res.status(200).json(response);
   },(err)=>{
     res.status(500).json(err);
   });
+});
+
+router.put('/team-member', authenticateToken, async (req,res)=>{
+  TeamMember.findOneAndUpdate({_id:req.body._id}, {...req.body}, {new:true, upsert:true}, (err, doc)=>{
+    if(!err){
+      res.status(200).json(doc);
+    }else{
+      res.status(500).json({message:"Failed to update"});
+    }
+  });
+});
+
+router.delete('/team-member', authenticateToken, async (req,res)=>{
+  TeamMember.remove({_id:req.body._id}, (err, doc)=>{
+    if(!err){
+      res.status(200).json(doc);
+    }else{
+      res.status(500).json({message:"Failed to Delete"});
+    }
+  });
+});
+/** TEAM MEMBER */
+
+
+/** PRODUCT API */
+router.get('/product', authenticateToken, async (req,res)=>{
+  const products = await Product.find();
+  res.status(200).json(products);
 });
 
 router.post('/product', authenticateToken, async (req,res)=>{
   let product = new Product({...req.body});
-  await product.save().then((response)=>{
+  product.save().then((response)=>{
     res.status(200).json(response);
   },(err)=>{
     res.status(500).json(err);
   });
+});
+
+router.put('/product', authenticateToken, async (req,res)=>{
+  Product.findOneAndUpdate({_id:req.body._id}, {...req.body}, {new:true, upsert:true}, (err, doc)=>{
+    if(!err){
+      res.status(200).json(doc);
+    }else{
+      res.status(500).json({message:"Failed to update"});
+    }
+  });
+});
+
+router.delete('/product', authenticateToken, async (req,res)=>{
+  Product.remove({_id:req.body._id}, (err, doc)=>{
+    if(!err){
+      res.status(200).json(doc);
+    }else{
+      res.status(500).json({message:"Failed to Delete"});
+    }
+  });
+});
+/** PRODUCT API */
+
+
+/** SERVICE API */
+router.get('/service', authenticateToken, async (req,res)=>{
+  const services = await Service.find();
+  res.status(200).json(services);
 });
 
 router.post('/service', authenticateToken, async (req,res)=>{
   let service = new Service({...req.body});
-  await service.save().then((response)=>{
+  service.save().then((response)=>{
     res.status(200).json(response);
   },(err)=>{
     res.status(500).json(err);
   });
 });
 
+
+router.put('/service', authenticateToken, async (req,res)=>{
+  Service.findOneAndUpdate({_id:req.body._id}, {...req.body}, {new:true, upsert:true}, (err, doc)=>{
+    if(!err){
+      res.status(200).json(doc);
+    }else{
+      res.status(500).json({message:"Failed to update"});
+    }
+  });
+});
+
+router.delete('/service', authenticateToken, async (req,res)=>{
+  Service.remove({_id:req.body._id}, (err, doc)=>{
+    if(!err){
+      res.status(200).json(doc);
+    }else{
+      res.status(500).json({message:"Failed to Delete"});
+    }
+  });
+});
+/** SERVICE API */
+
+
+/** Client */
+router.get('/client', authenticateToken, async (req,res)=>{
+  const clients = await Client.find();
+  res.status(200).json(clients);
+});
+
 router.post('/client', authenticateToken, async (req,res)=>{
   let client = new Client({...req.body});
-  await client.save().then((response)=>{
+  client.save().then((response)=>{
     res.status(200).json(response);
   },(err)=>{
     res.status(500).json(err);
   });
 });
+
+router.put('/client', authenticateToken, async (req,res)=>{
+  Client.findOneAndUpdate({_id:req.body._id}, {...req.body}, {new:true, upsert:true}, (err, doc)=>{
+    if(!err){
+      res.status(200).json(doc);
+    }else{
+      res.status(500).json({message:"Failed to update"});
+    }
+  });
+});
+
+router.delete('/client', authenticateToken, async (req,res)=>{
+  Client.remove({_id:req.body._id}, (err, doc)=>{
+    if(!err){
+      res.status(200).json(doc);
+    }else{
+      res.status(500).json({message:"Failed to Delete"});
+    }
+  });
+});
+
+/** Client */
 
 router.get('/get-in-touch', authenticateToken, async (req,res)=>{
   let email = req.query.email;

@@ -22,7 +22,7 @@ function authenticateToken(req, res, next) {
 }
 
 function generateAccessToken(creds) {
-  return jwt.sign(creds, SECRET_TOKEN, { expiresIn: '10h'});
+  return jwt.sign(creds, SECRET_TOKEN, { expiresIn: '2d'});
 }
 
 module.exports = {authenticateToken, generateAccessToken};
