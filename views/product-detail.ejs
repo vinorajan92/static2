@@ -32,7 +32,7 @@
                 </div>
                 <div class="row animate-box">
                     <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-                        <h2><%= product.productName %></h2>
+                        <h2><%= product.displayName %></h2>
                         <!-- Add when required -->
                         <!--
                             <p>
@@ -59,7 +59,7 @@
                             <div class="col-md-10 col-md-offset-1">
                                 <!-- Add when required -->
                                 <!-- <span class="price">SRP: $350</span> -->
-                                <h2><%= product.productName %></h2>
+                                <h2><%= product.displayName %></h2>
                                 <% for(var i=0; i<product.descriptions.length; i++) {%>
                                     <p><%= product.descriptions[i] %></p>
                                 <% } %>
